@@ -20,7 +20,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const decreaseBetButton = document.getElementById('decrease-bet');
     const decreaseBigBetButton = document.getElementById('decrease-big-bet');
 
-    // Собираем все кнопки изменения ставки в массив для удобного управления
     const betControlButtons = [
         increaseSmallBetButton,
         increaseBetButton,
@@ -31,10 +30,19 @@ document.addEventListener('DOMContentLoaded', function() {
     ];
 
     const TARGET_AMOUNT = 1000000;
-    let balance = 1000;
-    let currentBet = 10;
+    
+    // Загружаем сохраненные данные или устанавливаем значения по умолчанию
+    let balance = parseInt(localStorage.getItem('casinoBalance')) || 1000;
+    let currentBet = parseInt(localStorage.getItem('casinoCurrentBet')) || 10;
+    let spinCount = parseInt(localStorage.getItem('casinoSpinCount')) || 0;
     let isSpinning = false;
-    let spinCount = 0;
+    
+    // Сохраняем состояние игры
+    function saveGameState() {
+        localStorage.setItem('casinoBalance', balance);
+        localStorage.setItem('casinoCurrentBet', currentBet);
+        localStorage.setItem('casinoSpinCount', spinCount);
+    }
     
     function updateProgress() {
         const progress = Math.min((balance / TARGET_AMOUNT) * 100, 100);
@@ -52,12 +60,13 @@ document.addEventListener('DOMContentLoaded', function() {
             restartButton.style.display = 'none';
             spinButton.style.display = 'block';
         }
+        
+        saveGameState(); // Сохраняем при изменении баланса
     }
     
     function updateBet() {
         currentBetElement.textContent = currentBet;
         
-        // Обновляем состояние кнопок
         decreaseSmallBetButton.disabled = currentBet <= 10 || isSpinning;
         decreaseBetButton.disabled = currentBet <= 100 || isSpinning;
         decreaseBigBetButton.disabled = currentBet <= 1000 || isSpinning;
@@ -67,13 +76,15 @@ document.addEventListener('DOMContentLoaded', function() {
         increaseBigBetButton.disabled = currentBet + 1000 > balance || isSpinning;
         
         spinButton.disabled = balance < currentBet || balance <= 0 || isSpinning;
+        
+        saveGameState(); // Сохраняем при изменении ставки
     }
     
     function toggleBetControls(enable) {
         betControlButtons.forEach(button => {
             button.disabled = !enable;
         });
-        updateBet(); // Обновляем состояние кнопок с учетом нового статуса
+        updateBet();
     }
     
     function spinSlot(slotElement, duration, finalIndex) {
@@ -147,6 +158,8 @@ document.addEventListener('DOMContentLoaded', function() {
             while (symbols.includes('💰')) symbols.splice(symbols.indexOf('💰'), 1);
             while (symbols.includes('🍀')) symbols.splice(symbols.indexOf('🍀'), 1);
         }
+        
+        saveGameState(); // Сохраняем после каждого спина
     }
     
     spinButton.addEventListener('click', async function() {
@@ -159,8 +172,6 @@ document.addEventListener('DOMContentLoaded', function() {
         resultElement.classList.remove('win', 'jackpot');
         spinButton.disabled = true;
         restartButton.style.display = 'none';
-        
-        // Блокируем кнопки изменения ставки во время прокрутки
         toggleBetControls(false);
         
         const results = [];
@@ -187,27 +198,28 @@ document.addEventListener('DOMContentLoaded', function() {
         
         isSpinning = false;
         checkResult();
-        
-        // Разблокируем кнопки изменения ставки после завершения прокрутки
         toggleBetControls(true);
-        
         spinButton.disabled = balance < currentBet || balance <= 0;
     });
     
     restartButton.addEventListener('click', function() {
         balance = 1000;
         currentBet = 10;
+        spinCount = 0;
         updateBalance();
         updateBet();
         resultElement.textContent = 'Игра начата заново! Удачи!';
         resultElement.classList.remove('win', 'jackpot');
-        spinCount = 0;
         
         while (symbols.includes('💰')) symbols.splice(symbols.indexOf('💰'), 1);
         while (symbols.includes('🍀')) symbols.splice(symbols.indexOf('🍀'), 1);
         
-        // Убедимся, что кнопки разблокированы после перезапуска
         toggleBetControls(true);
+        
+        // Очищаем сохраненные данные при перезапуске
+        localStorage.removeItem('casinoBalance');
+        localStorage.removeItem('casinoCurrentBet');
+        localStorage.removeItem('casinoSpinCount');
     });
     
     // Обработчики для кнопок изменения ставки
