@@ -17,7 +17,7 @@ body {
     padding: 20px;
     text-align: center;
     max-width: 500px;
-    width: 90%;
+    width: 95%;
     border: 2px solid gold;
     margin: 20px 0;
 }
@@ -95,24 +95,26 @@ h1 {
     color: gold;
 }
 
+.bet-controls-container {
+    width: 100%;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
 .bet-controls {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 5px;
-    margin-bottom: 15px;
-    flex-wrap: nowrap; /* Изменено с wrap на nowrap */
-    overflow-x: auto; /* Добавлено для горизонтального скролла при необходимости */
+    gap: 3px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
     padding-bottom: 5px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
 }
 
 .bet-controls::-webkit-scrollbar {
-    height: 5px;
-}
-
-.bet-controls::-webkit-scrollbar-thumb {
-    background-color: gold;
-    border-radius: 5px;
+    display: none;
 }
 
 .bet-controls button {
@@ -120,35 +122,25 @@ h1 {
     color: #1a1a1a;
     border: none;
     border-radius: 5px;
-    padding: 8px 12px;
-    font-size: 0.9em;
+    padding: 6px 8px;
+    font-size: 0.8em;
     cursor: pointer;
     font-weight: bold;
     transition: all 0.2s;
-    white-space: nowrap; /* Добавлено для предотвращения переноса текста */
-    flex-shrink: 0; /* Запрещаем сжатие кнопок */
-}
-
-.bet-controls button:hover {
-    background-color: #ffb74d;
-    transform: scale(1.05);
-}
-
-.bet-controls button:disabled {
-    background-color: #666;
-    color: #999;
-    cursor: not-allowed;
-    transform: none;
-}
-
-#current-bet {
-    font-weight: bold;
-    font-size: 1.1em;
-    min-width: 40px;
-    display: inline-block;
-    color: gold;
-    margin: 0 5px;
     white-space: nowrap;
+    flex: 0 0 auto;
+    min-width: 40px;
+}
+
+.current-bet {
+    font-weight: bold;
+    font-size: 1em;
+    min-width: 50px;
+    margin: 0 5px;
+    color: gold;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #spin-button {
@@ -241,30 +233,19 @@ h1 {
     }
 }
 
-/* Медиа-запросы для адаптации на очень маленьких экранах */
-@media (max-width: 400px) {
-    .container {
-        padding: 15px;
-        width: 95%;
-    }
-    
-    h1 {
-        font-size: 1.8em;
-    }
-    
-    .slot {
-        font-size: 40px;
-        width: 60px;
-        height: 60px;
+@media (max-width: 350px) {
+    .bet-controls {
+        gap: 2px;
     }
     
     .bet-controls button {
-        padding: 6px 8px;
-        font-size: 0.8em;
+        padding: 5px 6px;
+        font-size: 0.7em;
+        min-width: 35px;
     }
     
-    #current-bet {
-        font-size: 1em;
-        min-width: 30px;
+    .current-bet {
+        margin: 0 3px;
+        font-size: 0.9em;
     }
 }
