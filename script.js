@@ -122,11 +122,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const values = slots.map(slot => slot.textContent);
         let winAmount = 0;
         let message = 'Попробуйте ещё раз!';
+        let isJackpot = false;
         
         if (values[0] === values[1] && values[1] === values[2]) {
             winAmount = currentBet * (values[0] === '7️⃣' ? 50 : 30);
             message = `ДЖЕКПОТ ${winAmount.toLocaleString()} ₽!`;
             resultElement.classList.add('jackpot');
+            isJackpot = true;
         } 
         else if (values[0] === values[1] || values[1] === values[2] || values[0] === values[2]) {
             winAmount = Math.floor(currentBet * 0.75);
@@ -153,7 +155,8 @@ document.addEventListener('DOMContentLoaded', function() {
             if (spinCount >= 5 && !symbols.includes('💰')) {
                 symbols.push('💰', '🍀', '💰', '🍀');
             }
-        } else {
+        } else if (isJackpot) {
+            // Сбрасываем высокий шанс только при джекпоте
             spinCount = 0;
             while (symbols.includes('💰')) symbols.splice(symbols.indexOf('💰'), 1);
             while (symbols.includes('🍀')) symbols.splice(symbols.indexOf('🍀'), 1);
