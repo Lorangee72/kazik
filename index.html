@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎰 Казик 🎰</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🎰 Казик 🎰</h1>
+        
+        <div class="target">Цель: 1,000,000 ₽</div>
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        
+        <div class="slots-container">
+            <div class="slot" id="slot1">🍒</div>
+            <div class="slot" id="slot2">🍋</div>
+            <div class="slot" id="slot3">🍊</div>
+        </div>
+        
+        <div class="controls">
+            <div class="balance">Баланс: <span id="balance">1000</span> ₽</div>
+            <div class="bet-controls">
+                <button id="decrease-big-bet">---</button>
+                <button id="decrease-bet">--</button>
+                <button id="decrease-small-bet">-</button>
+                <span id="current-bet">10</span> ₽
+                <button id="increase-small-bet">+</button>
+                <button id="increase-bet">++</button>
+                <button id="increase-big-bet">+++</button>
+            </div>
+            <button id="spin-button">Крутить!</button>
+            <button id="restart-button">Начать сначала (1000 ₽)</button>
+        </div>
+        
+        <div class="result" id="result"></div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
